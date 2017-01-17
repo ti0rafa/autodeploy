@@ -69,15 +69,15 @@ class Handler
         }
 
         if (!is_writable($options['destination'])) {
-            die('Destination is not writable for '.CLI::exec('whoami'));
+            die('Destination is not writable for '.Cli::exec('whoami'));
         }
 
         if (!is_writable($options['destination'])) {
-            die('Destination is not writable for '.CLI::exec('whoami'));
+            die('Destination is not writable for '.Cli::exec('whoami'));
         }
 
         if (!is_null($options['rsync_destination']) && !is_writable($options['rsync_destination'])) {
-            die('Rsync Destination is not writable for '.CLI::exec('whoami'));
+            die('Rsync Destination is not writable for '.Cli::exec('whoami'));
         }
 
         /*
