@@ -42,7 +42,7 @@ The user running php must be configured correctly. Please make sure to check any
 
 To figure out who is running run `whoami` in a php script, create a file with the following code:
 
-```
+```php
 <?php
 
 exec('whoami');
