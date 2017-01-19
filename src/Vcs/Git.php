@@ -41,8 +41,8 @@ class Git
             $command = $this->bin.' clone git@'.$domain.':'.$repo.'.git '.$destination;
             $out = Cli::exec($command);
 
-            if (is_null($out)) {
-                die('Failed: sudo -Hu '.exec('whoami').' '.$command);
+            if (strlen($out) === 0) {
+                die('Failed: check access for '.exec('whoami'));
             }
 
             echo 'Success'.PHP_EOL;
@@ -56,6 +56,8 @@ class Git
                 $success = true;
             } elseif (strpos($out, 'Fast-forward') !== false) {
                 $success = true;
+            } elseif (strlen($out) === 0) {
+                die('Failed: check access for '.exec('whoami'));
             }
 
             $head = Cli::exec('cd '.$destination.' && '.$this->bin.' rev-parse --short HEAD');

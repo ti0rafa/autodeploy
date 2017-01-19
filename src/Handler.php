@@ -54,8 +54,6 @@ class Handler
             'destination' => null,
             'vcs' => 'git',
             'vcs_path' => 'git',
-            'rsync_destination' => null,
-            'rsync_filter' => null,
         ];
 
         $options = array_merge($defaults, $options);
@@ -74,10 +72,6 @@ class Handler
 
         if (!is_writable($options['destination'])) {
             die('Destination is not writable for '.Cli::exec('whoami'));
-        }
-
-        if (!is_null($options['rsync_destination']) && !is_writable($options['rsync_destination'])) {
-            die('Rsync Destination is not writable for '.Cli::exec('whoami'));
         }
 
         /*
@@ -134,19 +128,5 @@ class Handler
             $options['branch'],
             $options['destination'].DIRECTORY_SEPARATOR.$options['folder']
         );
-
-        /*
-         * Rsync
-         */
-
-        if (!is_null($options['rsync_destination']) && !is_dir($options['rsync_destination'].DIRECTORY_SEPARATOR.$options['folder'])) {
-            $this->info('Publishing '.$ServiceProvider->repo);
-
-            Rsync::link(
-                $options['destination'].DIRECTORY_SEPARATOR.$options['folder'],
-                $options['rsync_destination'].DIRECTORY_SEPARATOR.$options['folder'],
-                $options['rsync_filter']
-            );
-        }
     }
 }
