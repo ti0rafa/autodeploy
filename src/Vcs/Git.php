@@ -26,10 +26,11 @@ class Git
      *
      * @param string $domain      Domain
      * @param string $repo        Repository
+     * @param string $remote      Remote
      * @param string $branch      Branch name
      * @param string $destination Destination
      */
-    final public function update($domain, $repo, $branch, $destination)
+    final public function update($domain, $repo, $remote, $branch, $destination)
     {
         /*
          * Clone or fecth from repository
@@ -50,7 +51,7 @@ class Git
             $success = false;
 
             $out = Cli::exec('cd '.$destination.' && '.$this->bin.' fetch');
-            $out = Cli::exec('cd '.$destination.' && '.$this->bin.' pull');
+            $out = Cli::exec('cd '.$destination.' && '.$this->bin.' pull '.$remote.' '.$branch);
 
             if (strpos($out, 'Already up-to-date') !== false) {
                 $success = true;

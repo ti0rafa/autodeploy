@@ -49,6 +49,7 @@ class Handler
          */
 
         $defaults = [
+            'remote' => 'origin',
             'branch' => 'master',
             'folder' => null,
             'destination' => null,
@@ -125,6 +126,7 @@ class Handler
         $System->update(
             $ServiceProvider->domain,
             $ServiceProvider->repo,
+            $options['remote'],
             $options['branch'],
             $options['destination'].DIRECTORY_SEPARATOR.$options['folder']
         );

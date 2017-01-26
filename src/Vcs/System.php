@@ -30,11 +30,12 @@ class System
      *
      * @param string $domain      Domain
      * @param string $repo        Repository
+     * @param string $remote      Remote
      * @param string $branch      Branch name
      * @param string $destination Destination
      */
-    final public function update($domain, $repo, $branch, $destination)
+    final public function update($domain, $repo, $remote, $branch, $destination)
     {
-        $this->VcsHandler->update($domain, $repo, $branch, $destination);
+        $this->VcsHandler->update($domain, $repo, $remote, $branch, $destination);
     }
 }
