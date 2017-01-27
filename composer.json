@@ -2,7 +2,7 @@
     "name" : "tiorafa/autodeploy",
     "description": "Bitbucket webhook auto deployer",
     "type": "library",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "license": "MIT",
     "autoload" : {
         "psr-4" : {

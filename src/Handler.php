@@ -79,7 +79,7 @@ class Handler
          * Add repository
          */
 
-        $this->repositories[$full_name] = $options;
+        $this->repositories[$full_name][] = $options;
     }
 
     /**
@@ -102,33 +102,42 @@ class Handler
             die('Repository '.$ServiceProvider->repo.' isn\'t register');
         }
 
-        $options = $this->repositories[$ServiceProvider->repo];
-
-        if (!$ServiceProvider->hasBranch($options['branch'])) {
-            die('Branch '.$options['branch'].' was not updated');
-        }
-
-        if ($options['vcs'] !== $ServiceProvider->vcs) {
-            die('VCS mismatch expected '.$options['vcs'].' received '.$ServiceProvider->vcs);
-        }
-
         if ($ServiceProvider->update === false) {
             $this->info('Nothing to update');
+        }
+
+        $selected = null;
+        foreach ($this->repositories as $repo => $options) {
+            if ($ServiceProvider->repo === $repo) {
+                foreach ($options as $key => $config) {
+                    if (
+                        $ServiceProvider->hasBranch($config['branch']) &&
+                        $config['vcs'] === $ServiceProvider->vcs
+                    ) {
+                        $config['repo'] = $repo;
+                        $selected = $config;
+                    }
+                }
+            }
+        }
+
+        if (is_null($selected)) {
+            die('No configuration found');
         }
 
         /*
          * Pull changes
          */
 
-        $this->info('Pulling '.$ServiceProvider->repo);
+        $this->info('Pulling '.$selected['repo'].' on branch '.$selected['branch']);
 
-        $System = new System($options['vcs'], $options['vcs_path']);
+        $System = new System($selected['vcs'], $selected['vcs_path']);
         $System->update(
             $ServiceProvider->domain,
             $ServiceProvider->repo,
-            $options['remote'],
-            $options['branch'],
-            $options['destination'].DIRECTORY_SEPARATOR.$options['folder']
+            $selected['remote'],
+            $selected['branch'],
+            $selected['destination'].DIRECTORY_SEPARATOR.$selected['folder']
         );
     }
 }
